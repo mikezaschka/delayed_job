@@ -35,6 +35,18 @@ module Delayed
         def self.after_fork
           ::ActiveRecord::Base.connection.reconnect!
         end
+        
+        def failed?
+          self.failed_at.present?
+        end
+        
+        def finished?
+          self.finished_at.present?
+        end
+        
+        def work_in_progress?
+          not finished? and not failed?
+        end
 
         # When a worker is exiting, make sure we don't have any locked jobs.
         def self.clear_locks!(worker_name)
