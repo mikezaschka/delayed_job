@@ -31,6 +31,7 @@ module Delayed
         key :locked_at,   Time
         key :locked_by,   String, :index => true
         key :failed_at,   Time
+        key :finished_at, Time
         key :last_error,  String
         timestamps!
         
@@ -57,6 +58,7 @@ module Delayed
             :run_at => {"$lte" => right_now},
             :limit => -limit, # In mongo, positive limits are 'soft' and negative are 'hard'
             :failed_at => nil,
+            :finished_at => nil,
             :sort => [['priority', 1], ['run_at', 1]]
           }
 

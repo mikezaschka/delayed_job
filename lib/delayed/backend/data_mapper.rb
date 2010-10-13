@@ -35,6 +35,7 @@ module Delayed
         property :locked_at,   Time, :index => true
         property :locked_by,   String
         property :failed_at,   Time
+        property :finished_at, Time
         property :last_error,  Text
                 
         def self.db_time_now
@@ -43,7 +44,11 @@ module Delayed
                 
         def self.find_available(worker_name, limit = 5, max_run_time = Worker.max_run_time)
           
-          simple_conditions = { :run_at.lte => db_time_now, :limit => limit, :failed_at => nil, :order => [:priority.asc, :run_at.asc]  }
+          simple_conditions = { :run_at.lte => db_time_now, 
+                                :limit => limit, 
+                                :failed_at => nil, 
+                                :finished_at => nil, 
+                                :order => [:priority.asc, :run_at.asc]  }
 
           # respect priorities
           simple_conditions[:priority.gte] = Worker.min_priority if Worker.min_priority
