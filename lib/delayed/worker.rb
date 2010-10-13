@@ -16,7 +16,7 @@ module Delayed
     cattr_accessor :destroy_successfull_jobs
     self.destroy_successfull_jobs = true    
     
-    # only useful if destroy_successful_jobs == false
+    # only useful if destroy_successfull_jobs == false
     # This will clear out the errors for a successful job
     # since it succeeded, no reason to keep around
     cattr_accessor :clear_successful_errors
@@ -129,7 +129,7 @@ module Delayed
       runtime =  Benchmark.realtime do
         Timeout.timeout(self.class.max_run_time.to_i) { job.invoke_job }
         
-        if destroy_successful_jobs
+        if destroy_successfull_jobs
           job.destroy
         else
           new_attributes = {:finished_at => Delayed::Job.db_time_now, :failed_at => nil, :locked_at => nil, :locked_by => nil}
