@@ -13,6 +13,9 @@ module Delayed
     cattr_accessor :destroy_failed_jobs
     self.destroy_failed_jobs = true
     
+    cattr_accessor :destroy_successfull_jobs
+    self.destroy_successfull_jobs = true    
+    
     self.logger = if defined?(Merb::Logger)
       Merb.logger
     elsif defined?(RAILS_DEFAULT_LOGGER)
